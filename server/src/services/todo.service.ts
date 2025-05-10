@@ -1,25 +1,24 @@
+import { knexInstance } from '@/database/knexfile';
 import { ITodo } from '@/interfaces/todo.interface';
-import knex from 'knex';
+
+const db = knexInstance;
 
 export async function all() {
-  return knex('todos');
+  return db('todos');
 }
 
 export async function getById(id: string) {
-  const results = await knex('todos').where({ id }).first();
+  const results = await db('todos').where({ id }).first();
   return results;
 }
 
 export async function create(userId: string, todoData: ITodo): Promise<ITodo> {
   // Get max order value for the project
-  const maxOrderResult = await knex('todos')
-    .where({ project_id: todoData.project_id })
-    .max('order as maxOrder')
-    .first();
+  const maxOrderResult = await db('todos').where({ project_id: todoData.project_id }).max('order as maxOrder').first();
 
   const order = maxOrderResult!.maxOrder !== null ? maxOrderResult!.maxOrder + 1 : 0;
 
-  const [todo] = await knex('todos')
+  const [todo] = await db('todos')
     .insert({
       title: todoData.title,
       completed: todoData.completed || false,
@@ -36,7 +35,7 @@ export async function create(userId: string, todoData: ITodo): Promise<ITodo> {
 }
 
 export async function update(id: string, properties: ITodo) {
-  const results = await knex('todos')
+  const results = await db('todos')
     .where({ id })
     .update({ ...properties })
     .returning('*');
@@ -45,10 +44,10 @@ export async function update(id: string, properties: ITodo) {
 
 // delete is a reserved keyword
 export async function deleteTodo(id: string) {
-  const results = await knex('todos').where({ id }).del().returning('*');
+  const results = await db('todos').where({ id }).del().returning('*');
   return results[0];
 }
 
 export async function clear() {
-  return knex('todos').del().returning('*');
+  return db('todos').del().returning('*');
 }

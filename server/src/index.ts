@@ -9,6 +9,9 @@ import cors from 'cors';
 import compression from 'compression';
 import { envConfig } from './config/env.config';
 import { knexInstance } from './database/knexfile';
+import { appRoutes } from './routes';
+import { CustomError, IErrorResponse } from './utils/error';
+import { StatusCodes } from 'http-status-codes';
 
 dotenv.config();
 
@@ -26,8 +29,8 @@ class ToDoServer {
   public start(): void {
     this.securityMiddleware(this.app);
     this.standardMiddleware(this.app);
+    this.routesMiddleware(this.app);
     this.errorHandler(this.app);
-    this.healthRoute(this.app);
     this.startHttpServer(this.httpServer);
   }
 
@@ -62,18 +65,18 @@ class ToDoServer {
     app.use(urlencoded({ extended: true, limit: '200mb' }));
   }
 
-  private errorHandler(app: Application): void {
-    app.use(/(.*)/, (req: Request, res: Response, next: NextFunction) => {
-      // const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-      // log.log('error', `${fullUrl} endpoint does not exist.`, '');
-      // res.status(StatusCodes.NOT_FOUND).json({ message: 'The endpoint called does not exist.'});
-      next();
-    });
+  private routesMiddleware(app: Application): void {
+    appRoutes(app);
   }
 
-  private healthRoute(app: Application) {
-    app.get('/health', (_req: Request, res: Response) => {
-      res.status(200).send('TODO service is healthy and OK.');
+  private errorHandler(app: Application): void {
+    app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
+      if (error instanceof CustomError) {
+        console.log('error', error);
+        res.status(error.statusCode).json(error.serializeErrors());
+      }
+
+      next();
     });
   }
 

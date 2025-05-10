@@ -9,9 +9,9 @@ exports.up = function (knex: Knex) {
     table.increments('id').primary();
     table.string('email').notNullable().unique();
     table.string('username').unique();
-    table.string('password_hash').notNullable();
-    table.string('first_name');
-    table.string('last_name');
+    table.string('password').notNullable();
+    table.string('firstName');
+    table.string('lastName');
     table.timestamps(true, true);
   });
 };

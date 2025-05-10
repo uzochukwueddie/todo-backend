@@ -1,28 +1,33 @@
 import { IUser } from '@/interfaces/user.interface';
 import { getByEmail, getByUsername } from '@/services/user.service';
+import { BadRequestError, NotFoundError } from './error';
 
 export async function validateSignUpUser(input: IUser) {
-  const { username, email, password } = input;
+  const { username, email, password, firstName, lastName } = input;
 
   if (!isEmail(email)) {
-    throw new Error('Invalid email');
+    throw new BadRequestError('Invalid email');
   }
 
   const existingUser = await getByEmail(email);
   if (existingUser) {
-    throw new Error('Invalid credentials');
+    throw new BadRequestError('Invalid credentials');
   }
 
   if (username!.length < 5) {
-    throw new Error('Username must have at least 5 characters.');
+    throw new BadRequestError('Username must have at least 5 characters.');
+  }
+
+  if (!firstName!.length || !lastName!.length) {
+    throw new BadRequestError('Firstname or Lastname must not be empty.');
   }
 
   if (password!.length < 7) {
-    throw new Error('Password must have at least 7 characters.');
+    throw new BadRequestError('Password must have at least 7 characters.');
   }
 
   if (!/(?=.*[a-z])(?=.*\d)/.test(password!)) {
-    throw new Error('Password must contain at least one lowercase and one number.');
+    throw new BadRequestError('Password must contain at least one lowercase and one number.');
   }
 }
 
@@ -34,15 +39,15 @@ export async function validateSignInUser(input: IUser): Promise<IUser> {
 
   const existingUser: IUser | undefined = !isValidEmail ? await getByUsername(username) : await getByEmail(username);
   if (!existingUser) {
-    throw new Error('Invalid credentials');
+    throw new NotFoundError('Invalid credentials');
   }
 
   if (password!.length < 7) {
-    throw new Error('Password must have at least 7 characters.');
+    throw new BadRequestError('Password must have at least 7 characters.');
   }
 
   if (!/(?=.*[a-z])(?=.*\d)/.test(password!)) {
-    throw new Error('Password must contain at least one lowercase and one number.');
+    throw new BadRequestError('Password must contain at least one lowercase and one number.');
   }
 
   return existingUser;

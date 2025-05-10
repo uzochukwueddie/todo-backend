@@ -1,11 +1,29 @@
 ###
-POST http://localhost:5000
-X-Api-Key: T4fykxoTTcDLciLiRDixwAYhQjXrjiK9E7cBQX7qqYSsPD9KfbyZTauBcgzn8ovM
+POST http://localhost:5000/auth/signup
 content-type: application/json
 Accept: application/json
 
 {
-    "to": "+2348153353131",
-    "from": "KickChat",
-    "text": "24680 is your verification code"
+    "email": "dan@test.com",
+    "username": "Danny",
+    "password": "Thisisgood1",
+    "firstName": "Daniel",
+    "lastName": "Murphy"
 }
+
+###
+POST http://localhost:5000/auth/signin
+content-type: application/json
+Accept: application/json
+
+{
+    "username": "dan@test.com",
+    "password": "Thisisgood1"
+}
+
+###
+POST http://localhost:5000/auth/signout
+content-type: application/json
+Accept: application/json
+
+{}

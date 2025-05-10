@@ -1,9 +1,11 @@
 import { IUser } from '@/interfaces/user.interface';
 import { authMiddleware } from '@/middleware/auth';
 import { create, getById } from '@/services/user.service';
+import { BadRequestError, ServerError } from '@/utils/error';
 import { hashPassword, verifyPassword } from '@/utils/utils';
 import { validateSignInUser, validateSignUpUser } from '@/utils/validation';
 import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 export class User {
   public async create(req: Request, res: Response): Promise<void> {
@@ -21,9 +23,9 @@ export class User {
       const accessToken: string = authMiddleware.generateAccessToken(userData);
       req.session = { access: accessToken };
 
-      res.status(201).json({ message: 'User created successfully', user: userData });
-    } catch (error) {
-      throw new Error('Failed to register user.');
+      res.status(StatusCodes.CREATED).json({ message: 'User created successfully', user: userData });
+    } catch (error: any) {
+      throw new ServerError(error?.message);
     }
   }
 
@@ -35,15 +37,15 @@ export class User {
 
       const isPasswordValid = await verifyPassword(password, user.password!);
       if (!isPasswordValid) {
-        throw new Error('Invalid credentials');
+        throw new BadRequestError('Invalid credentials');
       }
 
       const accessToken: string = authMiddleware.generateAccessToken(user);
       req.session = { access: accessToken };
 
-      res.status(200).json({ message: 'User login successful', user });
-    } catch (error) {
-      throw new Error('Failed to login user.');
+      res.status(StatusCodes.OK).json({ message: 'User login successful', user });
+    } catch (error: any) {
+      throw new ServerError(error?.message);
     }
   }
 
@@ -51,11 +53,11 @@ export class User {
     try {
       const existingUser: IUser | undefined = await getById(req.currentUser!.id);
       if (!existingUser || !Object.keys(existingUser!).length) {
-        throw new Error('Invalid user or credentials');
+        throw new BadRequestError('Invalid user or credentials');
       }
-      res.status(200).json({ message: 'Authenticated user', user: existingUser });
-    } catch (error) {
-      throw new Error('Invalid user or credentials');
+      res.status(StatusCodes.OK).json({ message: 'Authenticated user', user: existingUser });
+    } catch (error: any) {
+      throw new ServerError(error?.message);
     }
   }
 
@@ -63,9 +65,9 @@ export class User {
     try {
       req.session = null;
       req.currentUser = undefined;
-      res.status(200).json({ message: 'Logout successful' });
-    } catch (error) {
-      throw new Error('Failed to logout');
+      res.status(StatusCodes.OK).json({ message: 'Logout successful' });
+    } catch (error: any) {
+      throw new ServerError('Failed to logout');
     }
   }
 }

@@ -13,6 +13,7 @@ export interface IUser {
   password?: string;
   firstName?: string;
   lastName?: string;
+  created_at?: Date;
 }
 
 export interface TokenPayload {
