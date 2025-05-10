@@ -1,8 +1,5 @@
 import { IUser } from '@/interfaces/user.interface';
-import bcrypt from 'bcryptjs';
 import knex from 'knex';
-
-const SALT_ROUNDS = 10;
 
 export function getAll() {
   return knex('users').select('id', 'email', 'username', 'first_name', 'last_name', 'created_at');
@@ -16,14 +13,16 @@ export function getByEmail(email: string) {
   return knex('users').where({ email }).first();
 }
 
-export async function create(userData: IUser) {
-  const passwordHash = await bcrypt.hash(userData.password!, SALT_ROUNDS);
+export function getByUsername(username: string) {
+  return knex('users').where({ username }).first();
+}
 
+export async function create(userData: IUser) {
   const [user] = await knex('users')
     .insert({
       email: userData.email,
       username: userData.username,
-      password_hash: passwordHash,
+      password_hash: userData.password,
       first_name: userData.firstName,
       last_name: userData.lastName
     })
@@ -46,19 +45,19 @@ export function deleteUser(id: string) {
   return knex('users').where({ id }).del();
 }
 
-export async function verifyPassword(email: string, password: string) {
-  const user = await knex('users').where({ email }).first();
+// export async function verifyPassword(email: string, password: string) {
+//   const user = await knex('users').where({ email }).first();
 
-  if (!user) return false;
+//   if (!user) return false;
 
-  const isValid = await bcrypt.compare(password, user.password_hash);
+//   const isValid = await bcrypt.compare(password, user.password_hash);
 
-  if (!isValid) return false;
+//   if (!isValid) return false;
 
-  // Return user without password_hash
-  delete user.password_hash;
-  return user;
-}
+//   // Return user without password_hash
+//   delete user.password_hash;
+//   return user;
+// }
 
 export function getUserOrganizations(userId: string) {
   return knex('organization_members as om')

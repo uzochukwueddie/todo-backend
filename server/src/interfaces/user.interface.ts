@@ -1,3 +1,11 @@
+declare global {
+  namespace Express {
+    interface Request {
+      currentUser?: TokenPayload;
+    }
+  }
+}
+
 export interface IUser {
   id?: string;
   email: string;
@@ -5,4 +13,9 @@ export interface IUser {
   password?: string;
   firstName?: string;
   lastName?: string;
+}
+
+export interface TokenPayload {
+  id: string;
+  email: string;
 }
