@@ -7,7 +7,7 @@ declare global {
 }
 
 export interface IUser {
-  id?: string;
+  id?: number;
   email: string;
   username: string;
   password?: string;
@@ -17,6 +17,6 @@ export interface IUser {
 }
 
 export interface TokenPayload {
-  id: string;
+  id: number;
   email: string;
 }

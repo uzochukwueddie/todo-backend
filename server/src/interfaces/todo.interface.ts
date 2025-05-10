@@ -1,5 +1,5 @@
 export interface ITodo {
-  id?: string;
+  id?: number;
   title: string;
   order: number;
   description: string;
@@ -8,5 +8,5 @@ export interface ITodo {
   project_id?: string;
   priority: string;
   created_by: string;
-  assignee_id: string;
+  assignee_id?: string;
 }

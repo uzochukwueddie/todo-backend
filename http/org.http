@@ -1,0 +1,14 @@
+###
+GET http://localhost:5000/api/current-user
+content-type: application/json
+Accept: application/json
+
+###
+POST http://localhost:5000/api/org
+content-type: application/json
+Accept: application/json
+
+{
+    "name": "Tester Org",
+    "description": "A software company",
+}

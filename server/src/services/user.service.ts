@@ -7,7 +7,7 @@ export function getAll() {
   return db('users').select('id', 'email', 'username', 'firstName', 'lastName', 'created_at');
 }
 
-export function getById(id: string) {
+export function getById(id: number) {
   return db('users').where({ id }).select('id', 'email', 'username', 'firstName', 'lastName', 'created_at').first();
 }
 

@@ -1,0 +1,48 @@
+###
+POST http://localhost:5000/api/auth/signup
+content-type: application/json
+Accept: application/json
+
+{
+    "email": "dan@test.com",
+    "username": "Danny",
+    "password": "Thisisgood1",
+    "firstName": "Daniel",
+    "lastName": "Murphy"
+}
+
+###
+POST http://localhost:5000/api/auth/signin
+content-type: application/json
+Accept: application/json
+
+{
+    "username": "dan@test.com",
+    "password": "Thisisgood1"
+}
+
+###
+POST http://localhost:5000/api/auth/signout
+content-type: application/json
+Accept: application/json
+
+{}
+
+###
+GET http://localhost:5000/api/current-user
+content-type: application/json
+Accept: application/json
+
+###
+POST http://localhost:5000/api/todo
+content-type: application/json
+Accept: application/json
+
+{
+    "title": "Fix login bug",
+    "order": 1,
+    "description": "There is a bug with the login feature.",
+    "due_date": "Daniel",
+    "project_id": "1",
+    "priority": "high"
+}

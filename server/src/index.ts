@@ -70,12 +70,16 @@ class ToDoServer {
   }
 
   private errorHandler(app: Application): void {
+    app.all('/{*splat}', (req: Request, res: Response) => {
+      res.status(StatusCodes.NOT_FOUND).json({
+        message: `${req.originalUrl} not found`
+      });
+    });
     app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
       if (error instanceof CustomError) {
         console.log('error', error);
         res.status(error.statusCode).json(error.serializeErrors());
       }
-
       next();
     });
   }
