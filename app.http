@@ -1,0 +1,11 @@
+###
+POST http://localhost:5000
+X-Api-Key: T4fykxoTTcDLciLiRDixwAYhQjXrjiK9E7cBQX7qqYSsPD9KfbyZTauBcgzn8ovM
+content-type: application/json
+Accept: application/json
+
+{
+    "to": "+2348153353131",
+    "from": "KickChat",
+    "text": "24680 is your verification code"
+}

@@ -12,6 +12,7 @@ exports.up = function (knex: Knex) {
     table.enum('priority', ['low', 'medium', 'high']).defaultTo('medium');
     table.integer('created_by').unsigned().references('id').inTable('users').onDelete('CASCADE');
     table.integer('assignee_id').unsigned().references('id').inTable('users');
+    table.timestamps(true, true);
   });
 };
 
