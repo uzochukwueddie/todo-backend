@@ -14,7 +14,7 @@ content-type: application/json
 Accept: application/json
 
 {
-    "name": "Tester Org",
+    "name": "Tester123 Org",
     "description": "A gaming software company"
 }
 

@@ -6,6 +6,7 @@ import { hashPassword, verifyPassword } from '@/utils/utils';
 import { validateSignInUser, validateSignUpUser } from '@/utils/validation';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { omit } from 'lodash';
 
 export class User {
   public async create(req: Request, res: Response): Promise<void> {
@@ -43,7 +44,9 @@ export class User {
       const accessToken: string = authMiddleware.generateAccessToken(user);
       req.session = { access: accessToken };
 
-      res.status(StatusCodes.OK).json({ message: 'User login successful', user });
+      const updatedUser = omit(user, ['password']);
+
+      res.status(StatusCodes.OK).json({ message: 'User login successful', user: updatedUser });
     } catch (error: any) {
       throw new ServerError(error?.message);
     }

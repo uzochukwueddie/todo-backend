@@ -32,17 +32,3 @@ Accept: application/json
 GET http://localhost:5000/api/current-user
 content-type: application/json
 Accept: application/json
-
-###
-POST http://localhost:5000/api/todo
-content-type: application/json
-Accept: application/json
-
-{
-    "title": "Fix login bug",
-    "order": 1,
-    "description": "There is a bug with the login feature.",
-    "due_date": "Daniel",
-    "project_id": "1",
-    "priority": "high"
-}

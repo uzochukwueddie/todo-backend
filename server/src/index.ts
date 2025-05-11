@@ -77,7 +77,6 @@ class ToDoServer {
     });
     app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
       if (error instanceof CustomError) {
-        console.log('error', error);
         res.status(error.statusCode).json(error.serializeErrors());
       }
       next();
