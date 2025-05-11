@@ -53,8 +53,8 @@ export class Organization {
   public async deleteOrganization(req: Request, res: Response): Promise<void> {
     try {
       const { orgId } = req.params;
-      const organizationId: number = await deleteOrg(parseInt(orgId));
-      res.status(StatusCodes.OK).json({ message: 'Organization deleted successfully', organizationId });
+      const organization = await deleteOrg(parseInt(orgId));
+      res.status(StatusCodes.OK).json({ message: 'Organization deleted successfully', organization });
     } catch (error: any) {
       throw new ServerError(error?.message);
     }

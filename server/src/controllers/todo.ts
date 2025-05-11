@@ -27,7 +27,7 @@ export class Todo {
     try {
       const todo: ITodo = await createTodo({
         ...req.body,
-        due_date: new Date(),
+        due_date: new Date(req.body.due_date),
         created_by: req.currentUser?.id
       });
 

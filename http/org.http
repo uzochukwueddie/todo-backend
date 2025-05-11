@@ -1,5 +1,10 @@
 ###
-GET http://localhost:5000/api/current-user
+GET http://localhost:5000/api/orgs
+content-type: application/json
+Accept: application/json
+
+###
+GET http://localhost:5000/api/org/1
 content-type: application/json
 Accept: application/json
 
@@ -10,5 +15,22 @@ Accept: application/json
 
 {
     "name": "Tester Org",
-    "description": "A software company",
+    "description": "A gaming software company"
 }
+
+###
+PUT http://localhost:5000/api/org/1
+content-type: application/json
+Accept: application/json
+
+{
+    "name": "Gamer Org 1",
+    "description": "A gaming software company"
+}
+
+###
+DELETE http://localhost:5000/api/org/4
+content-type: application/json
+Accept: application/json
+
+{}

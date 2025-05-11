@@ -41,6 +41,6 @@ export async function updateProject(id: string, projectData: IProject) {
 }
 
 // Delete a project
-export function deleteProject(id: string) {
+export function deleteProject(id: number) {
   return db('projects').where({ id }).del().select('*');
 }

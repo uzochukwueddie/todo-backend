@@ -38,5 +38,5 @@ export async function update(id: number, orgData: IOrganization) {
 }
 
 export function deleteOrg(id: number) {
-  return db('organizations').where({ id }).del();
+  return db('organizations').where({ id }).del().returning('*');
 }

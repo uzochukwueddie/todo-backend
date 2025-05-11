@@ -67,8 +67,8 @@ export class Project {
 
   public async delete(req: Request, res: Response): Promise<void> {
     try {
-      const { todoId } = req.params;
-      const project: IProject = await deleteProject(todoId);
+      const { projectId } = req.params;
+      const project: IProject = await deleteProject(parseInt(projectId));
       res.status(StatusCodes.OK).json({ message: 'Project deleted successfully', project });
     } catch (error: any) {
       throw new ServerError(error?.message);
